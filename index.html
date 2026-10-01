@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rocks, Ice & Time — A Geological Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ice: #a8d8ea;
+      --deep-ice: #4a90a4;
+      --glacier: #e8f4f8;
+      --stone: #6b5b4f;
+      --slate: #2c3e50;
+      --granite: #8b7355;
+      --snow: #f7fafc;
+      --frost: #d4e6f1;
+      --accent: #5c8a9a;
+      --gold: #c9a86c;
+      --shadow: rgba(44, 62, 80, 0.12);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: linear-gradient(180deg, #e8f4f8 0%, #f0f7fa 40%, #faf8f5 100%);
+      color: var(--slate);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    /* Floating ice particles */
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: rgba(168, 216, 234, 0.5);
+      border-radius: 50%;
+      animation: drift linear infinite;
+    }
+
+    @keyframes drift {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.4; }
+      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(247, 250, 252, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(168, 216, 234, 0.4);
+      padding: 0.85rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: box-shadow 0.3s;
+    }
+
+    nav.scrolled {
+      box-shadow: 0 4px 20px var(--shadow);
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--deep-ice);
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--slate);
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      transition: color 0.25s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1.5px;
+      background: var(--deep-ice);
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--deep-ice);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 1.5rem 4rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(168, 216, 234, 0.35);
+      color: var(--deep-ice);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.4rem 1.1rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(74, 144, 164, 0.25);
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 7vw, 4.5rem);
+      font-weight: 700;
+      color: var(--slate);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      max-width: 900px;
+    }
+
+    .hero h1 span {
+      color: var(--deep-ice);
+      font-style: italic;
+    }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: #5a6a7a;
+      max-width: 540px;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+    }
+
+    .scroll-hint {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--accent);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      animation: bounce 2.2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+
+    .scroll-hint svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    /* Sections */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 5rem 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 600;
+      color: var(--slate);
+      margin-bottom: 0.75rem;
+    }
+
+    .era-time {
+      font-size: 0.95rem;
+      color: var(--granite);
+      font-weight: 500;
+      margin-bottom: 1.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .era-time::before {
+      content: '';
+      width: 28px;
+      height: 2px;
+      background: var(--gold);
+    }
+
+    p {
+      font-size: 1.05rem;
+      color: #3d4f5f;
+      margin-bottom: 1.25rem;
+      max-width: 680px;
+    }
+
+    /* Timeline card layout */
+    .era-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(168, 216, 234, 0.45);
+      border-radius: 20px;
+      padding: 2.25rem 2.5rem;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 8px 32px var(--shadow);
+      transition: transform 0.35s, box-shadow 0.35s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .era-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--deep-ice), var(--ice));
+    }
+
+    .era-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(44, 62, 80, 0.14);
+    }
+
+    .era-card.glacial {
+      background: linear-gradient(135deg, rgba(232, 244, 248, 0.9), rgba(255, 255, 255, 0.85));
+    }
+
+    .era-card.glacial::before {
+      background: linear-gradient(180deg, #7eb8c9, #a8d8ea);
+    }
+
+    /* Highlight boxes */
+    .highlight-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.75rem;
+    }
+
+    .highlight {
+      background: var(--snow);
+      border-radius: 14px;
+      padding: 1.25rem 1.4rem;
+      border: 1px solid rgba(168, 216, 234, 0.35);
+    }
+
+    .highlight h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--deep-ice);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .highlight p {
+      font-size: 0.92rem;
+      margin: 0;
+      color: #4a5c6c;
+    }
+
+    /* Rock type pills */
+    .rock-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.25rem;
+    }
+
+    .pill {
+      background: rgba(107, 91, 79, 0.08);
+      color: var(--stone);
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 0.35rem 0.85rem;
+      border-radius: 100px;
+      border: 1px solid rgba(107, 91, 79, 0.15);
+    }
+
+    .pill.ice {
+      background: rgba(74, 144, 164, 0.12);
+      color: var(--deep-ice);
+      border-color: rgba(74, 144, 164, 0.25);
+    }
+
+    /* Intro section */
+    .intro {
+      text-align: center;
+      padding-top: 3rem;
+    }
+
+    .intro p {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem;
+      font-style: italic;
+      color: var(--deep-ice);
+      max-width: 620px;
+      margin: 2rem auto 0;
+      line-height: 1.5;
+    }
+
+    /* Ice Ages special */
+    .ice-ages {
+      background: linear-gradient(180deg, rgba(168, 216, 234, 0.15), transparent);
+      border-radius: 24px;
+      padding: 3rem 2rem;
+      margin: 2rem 0;
+    }
+
+    .timeline-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 2rem;
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline-visual::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--deep-ice), var(--ice), transparent);
+    }
+
+    .tl-item {
+      position: relative;
+      padding: 0.9rem 0 0.9rem 1.5rem;
+    }
+
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -2rem;
+      top: 1.15rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--deep-ice);
+      border: 3px solid var(--glacier);
+      box-shadow: 0 0 0 3px rgba(74, 144, 164, 0.2);
+    }
+
+    .tl-item strong {
+      color: var(--slate);
+      font-weight: 600;
+    }
+
+    .tl-item span {
+      display: block;
+      font-size: 0.88rem;
+      color: #6a7a8a;
+      margin-top: 0.15rem;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 4rem 1.5rem 3rem;
+      color: #7a8a9a;
+      font-size: 0.9rem;
+      border-top: 1px solid rgba(168, 216, 234, 0.3);
+      margin-top: 2rem;
+    }
+
+    footer .heart {
+      color: var(--deep-ice);
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      nav {
+        padding: 0.75rem 1.25rem;
+      }
+      .nav-links {
+        gap: 1rem;
+        font-size: 0.85rem;
+      }
+      .era-card {
+        padding: 1.75rem 1.5rem;
+      }
+      .hero h1 {
+        font-size: 2.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="particles" id="particles"></div>
+
+  <nav id="nav">
+    <div class="logo">Rocks · Ice · Time</div>
+    <ul class="nav-links">
+      <li><a href="#hadean">Origins</a></li>
+      <li><a href="#paleozoic">Paleozoic</a></li>
+      <li><a href="#mesozoic">Mesozoic</a></li>
+      <li><a href="#cenozoic">Cenozoic</a></li>
+      <li><a href="#ice">Ice Ages</a></li>
+    </ul>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-badge">A Journey Through Deep Time</div>
+    <h1>Rocks, Ice &amp; the Quiet Poetry of <span>Glaciers</span></h1>
+    <p class="hero-sub">A love letter to the stones that remember, the ice that carves, and the ages that shaped our world — made for a geologist who reads the Earth like a story.</p>
+    <div class="scroll-hint">
+      <span>Scroll to begin</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+  </header>
+
+  <section class="intro">
+    <p class="section-label">Prologue</p>
+    <h2>Why the Earth Keeps Secrets in Stone</h2>
+    <p>Every rock is a time capsule. Every glacier is a slow, patient sculptor. Together they have rewritten continents, lowered sea levels, and left polished striations that still whisper of ancient cold.</p>
+    <p class="quote">“The mountains are the bones of the Earth, and the glaciers are her memory of ice.”</p>
+  </section>
+
+  <!-- HADEAN / ARCHEAN -->
+  <section id="hadean">
+    <div class="era-card">
+      <p class="section-label">The Beginning</p>
+      <h2>Hadean &amp; Archean Eons</h2>
+      <div class="era-time">4.6 – 2.5 billion years ago</div>
+      <p>Before life had a foothold, Earth was a restless furnace of molten rock and relentless bombardment. The first continental crust began to form — dense, dark, and enduring.</p>
+      <p>No glaciers yet. The planet was far too hot. But the seeds of everything that would later freeze, fracture, and flow were already crystallizing in the primordial magma oceans.</p>
+      <div class="highlight-grid">
+        <div class="highlight">
+          <h4>🪨 Oldest Rocks</h4>
+          <p>Acasta Gneiss (Canada) and Nuvvuagittuq Greenstone — fragments older than 4 billion years.</p>
+        </div>
+        <div class="highlight">
+          <h4>🌋 Early Crust</h4>
+          <p>Komatiites and tonalites — ultra-hot volcanic rocks that no longer erupt today.</p>
+        </div>
+      </div>
+      <div class="rock-pills">
+        <span class="pill">Gneiss</span>
+        <span class="pill">Greenstone</span>
+        <span class="pill">Komatiite</span>
+        <span class="pill">Banded Iron</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROTEROZOIC -->
+  <section id="proterozoic">
+    <div class="era-card glacial">
+      <p class="section-label">First Great Freezes</p>
+      <h2>Proterozoic Eon</h2>
+      <div class="era-time">2.5 billion – 541 million years ago</div>
+      <p>Oxygen rose. Continents grew. And for the first time, Earth experienced true global glaciation — the “Snowball Earth” episodes.</p>
+      <p>Ice sheets may have reached the equator. When they finally melted, the planet awoke into the Cambrian explosion. Cap carbonates still record the sudden warmth that followed.</p>
+      <div class="highlight-grid">
+        <div class="highlight">
+          <h4>❄️ Snowball Earth</h4>
+          <p>Huronian (~2.4 Ga) and Cryogenian (~720–635 Ma) glaciations — possibly planet-wide ice.</p>
+        </div>
+        <div class="highlight">
+          <h4>🧊 Tillites &amp; Dropstones</h4>
+          <p>Ancient glacial deposits frozen in stone, found from Australia to Namibia.</p>
+        </div>
+      </div>
+      <div class="rock-pills">
+        <span class="pill ice">Tillite</span>
+        <span class="pill ice">Diamictite</span>
+        <span class="pill">Cap Carbonate</span>
+        <span class="pill">Stromatolite</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PALEOZOIC -->
+  <section id="paleozoic">
+    <div class="era-card">
+      <p class="section-label">Life Takes the Stage</p>
+      <h2>Paleozoic Era</h2>
+      <div class="era-time">541 – 252 million years ago</div>
+      <p>Seas flooded continents. Trilobites, corals, and early fish flourished. Mountain ranges rose as continents collided — the Appalachians, the Caledonides, the Urals.</p>
+      <p>Near the end of the era, the late Paleozoic Ice Age gripped Gondwana. Massive ice sheets left striated pavements and glacial valleys across what is now Africa, India, Australia, and South America.</p>
+      <div class="highlight-grid">
+        <div class="highlight">
+          <h4>🏔️ Mountain Building</h4>
+          <p>Alleghanian orogeny welded North America and Africa into the supercontinent Pangaea.</p>
+        </div>
+        <div class="highlight">
+          <h4>❄️ Late Paleozoic Ice Age</h4>
+          <p>Carboniferous–Permian glaciation. Coal swamps grew between glacial advances.</p>
+        </div>
+      </div>
+      <div class="rock-pills">
+        <span class="pill">Limestone</span>
+        <span class="pill">Sandstone</span>
+        <span class="pill">Coal</span>
+        <span class="pill ice">Glacial Till</span>
+        <span class="pill">Shale</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MESOZOIC -->
+  <section id="mesozoic">
+    <div class="era-card">
+      <p class="section-label">Age of Reptiles &amp; Warm Seas</p>
+      <h2>Mesozoic Era</h2>
+      <div class="era-time">252 – 66 million years ago</div>
+      <p>Pangaea broke apart. Dinosaurs ruled the land. The climate was largely greenhouse — warm, with high sea levels and little permanent ice at the poles.</p>
+      <p>Yet even in this warm world, there were cooler intervals and possible small polar ice caps. The rocks of this time — chalks, sandstones, and volcanic sequences — still dominate many coastlines and mountain belts.</p>
+      <div class="highlight-grid">
+        <div class="highlight">
+          <h4>🦕 Warm Climate</h4>
+          <p>Little evidence of major continental ice sheets. High CO₂ kept the planet toasty.</p>
+        </div>
+        <div class="highlight">
+          <h4>🪨 Iconic Rocks</h4>
+          <p>Chalk (Cretaceous), Navajo Sandstone, Deccan Traps — the geological signature of a restless planet.</p>
+        </div>
+      </div>
+      <div class="rock-pills">
+        <span class="pill">Chalk</span>
+        <span class="pill">Sandstone</span>
+        <span class="pill">Basalt</span>
+        <span class="pill">Limestone</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CENOZOIC -->
+  <section id="cenozoic">
+    <div class="era-card glacial">
+      <p class="section-label">The Ice Returns</p>
+      <h2>Cenozoic Era</h2>
+      <div class="era-time">66 million years ago – Present</div>
+      <p>After the dinosaurs vanished, mammals rose and the climate slowly cooled. Antarctica drifted over the South Pole and acquired its ice sheet. Later, the Northern Hemisphere joined the freeze.</p>
+      <p>The Quaternary Period — the last 2.6 million years — has been defined by repeated glacial–interglacial cycles. Ice sheets advanced and retreated across North America and Eurasia, carving the Great Lakes, fjords, and countless U-shaped valleys.</p>
+      <div class="highlight-grid">
+        <div class="highlight">
+          <h4>🧊 Antarctic Ice Sheet</h4>
+          <p>Formed ~34 million years ago. Still the largest single piece of ice on Earth.</p>
+        </div>
+        <div class="highlight">
+          <h4>🌊 Northern Glaciations</h4>
+          <p>Laurentide and Scandinavian ice sheets reached their maximum only ~20,000 years ago.</p>
+        </div>
+      </div>
+      <div class="rock-pills">
+        <span class="pill ice">Moraine</span>
+        <span class="pill ice">Drumlin</span>
+        <span class="pill ice">Esker</span>
+        <span class="pill">Loess</span>
+        <span class="pill ice">Glacial Erratic</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ICE AGES DEEP DIVE -->
+  <section id="ice">
+    <div class="ice-ages">
+      <p class="section-label">The Heart of the Matter</p>
+      <h2>Ice Ages &amp; the Language of Glaciers</h2>
+      <p>Glaciers are not static. They flow, scrape, polish, pluck, and deposit. They leave behind a vocabulary written in the landscape:</p>
+
+      <div class="timeline-visual">
+        <div class="tl-item">
+          <strong>Cirques &amp; Aretes</strong>
+          <span>Bowl-shaped hollows and knife-edge ridges carved high in mountains.</span>
+        </div>
+        <div class="tl-item">
+          <strong>U-shaped Valleys &amp; Fjords</strong>
+          <span>The classic glacial signature — steep walls, wide floors, and drowned by rising seas.</span>
+        </div>
+        <div class="tl-item">
+          <strong>Striations &amp; Chatter Marks</strong>
+          <span>Scratches and chips on bedrock that reveal the direction of ancient ice flow.</span>
+        </div>
+        <div class="tl-item">
+          <strong>Moraines, Drumlins &amp; Eskers</strong>
+          <span>The debris left behind — ridges, streamlined hills, and sinuous gravel trails of meltwater.</span>
+        </div>
+        <div class="tl-item">
+          <strong>Icebergs &amp; Calving</strong>
+          <span>Where glaciers meet the sea, they birth floating cathedrals of ice that drift, melt, and reshape coastlines.</span>
+        </div>
+      </div>
+
+      <div class="highlight-grid" style="margin-top: 2.5rem;">
+        <div class="highlight">
+          <h4>🌍 Last Glacial Maximum</h4>
+          <p>~26,500 – 19,000 years ago. Sea level ~120 m lower. Ice covered much of Canada, northern Europe, and Patagonia.</p>
+        </div>
+        <div class="highlight">
+          <h4>📈 Interglacials</h4>
+          <p>We live in one now — the Holocene. Ice still holds ~70% of Earth’s freshwater, mostly in Antarctica and Greenland.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Closing -->
+  <section style="text-align: center; padding-bottom: 2rem;">
+    <h2 style="font-size: 1.9rem;">For the One Who Reads the Ice</h2>
+    <p style="margin: 1rem auto 0; max-width: 520px;">May every striation, every polished outcrop, and every drifting iceberg remind you that the Earth is still writing its story — and you are one of the few who can read it.</p>
+    <p style="margin-top: 1.5rem; font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--deep-ice); font-style: italic;">
+      With admiration for the geologist who works where the ice meets the sea.
+    </p>
+  </section>
+
+  <footer>
+    Made with care for a friend who understands that rocks remember and glaciers dream.<br>
+    <span class="heart">◆</span> Deep time is the longest love story.
+  </footer>
+
+  <script>
+    // Floating particles
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 28; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.width = p.style.height = (3 + Math.random() * 5) + 'px';
+      p.style.animationDuration = (12 + Math.random() * 18) + 's';
+      p.style.animationDelay = (Math.random() * 15) + 's';
+      container.appendChild(p);
+    }
+
+    // Nav shadow on scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Gentle reveal on scroll
+    const cards = document.querySelectorAll('.era-card, .ice-ages');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.12 });
+
+    cards.forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(28px)';
+      card.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+      observer.observe(card);
+    });
+  </script>
+</body>
+</html>
