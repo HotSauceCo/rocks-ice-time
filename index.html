@@ -140,11 +140,15 @@
       padding: 6rem 1.5rem 4rem;
       position: relative;
       z-index: 1;
+      background: 
+        linear-gradient(to bottom, rgba(232, 244, 248, 0.75) 0%, rgba(240, 247, 250, 0.9) 100%),
+        url('https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=1600&q=80') center/cover no-repeat;
+      background-attachment: fixed;
     }
 
     .hero-badge {
       display: inline-block;
-      background: rgba(168, 216, 234, 0.35);
+      background: rgba(168, 216, 234, 0.45);
       color: var(--deep-ice);
       font-size: 0.8rem;
       font-weight: 500;
@@ -153,7 +157,8 @@
       padding: 0.4rem 1.1rem;
       border-radius: 100px;
       margin-bottom: 1.5rem;
-      border: 1px solid rgba(74, 144, 164, 0.25);
+      border: 1px solid rgba(74, 144, 164, 0.3);
+      backdrop-filter: blur(4px);
     }
 
     .hero h1 {
@@ -164,6 +169,7 @@
       line-height: 1.15;
       margin-bottom: 1rem;
       max-width: 900px;
+      text-shadow: 0 2px 12px rgba(255,255,255,0.6);
     }
 
     .hero h1 span {
@@ -173,10 +179,11 @@
 
     .hero-sub {
       font-size: 1.15rem;
-      color: #5a6a7a;
+      color: #3d4f5f;
       max-width: 540px;
       margin-bottom: 2.5rem;
       font-weight: 300;
+      text-shadow: 0 1px 4px rgba(255,255,255,0.5);
     }
 
     .scroll-hint {
@@ -204,7 +211,7 @@
     section {
       position: relative;
       z-index: 1;
-      padding: 5rem 1.5rem;
+      padding: 4.5rem 1.5rem;
       max-width: 1100px;
       margin: 0 auto;
     }
@@ -252,11 +259,11 @@
 
     /* Timeline card layout */
     .era-card {
-      background: rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.75);
       backdrop-filter: blur(8px);
       border: 1px solid rgba(168, 216, 234, 0.45);
       border-radius: 20px;
-      padding: 2.25rem 2.5rem;
+      padding: 0;
       margin-bottom: 2.5rem;
       box-shadow: 0 8px 32px var(--shadow);
       transition: transform 0.35s, box-shadow 0.35s;
@@ -264,7 +271,29 @@
       overflow: hidden;
     }
 
-    .era-card::before {
+    .era-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(44, 62, 80, 0.14);
+    }
+
+    .era-card.glacial {
+      background: linear-gradient(135deg, rgba(232, 244, 248, 0.92), rgba(255, 255, 255, 0.88));
+    }
+
+    .card-image {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      display: block;
+      border-radius: 20px 20px 0 0;
+    }
+
+    .card-body {
+      padding: 2rem 2.25rem 2.25rem;
+      position: relative;
+    }
+
+    .card-body::before {
       content: '';
       position: absolute;
       top: 0;
@@ -274,16 +303,7 @@
       background: linear-gradient(180deg, var(--deep-ice), var(--ice));
     }
 
-    .era-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 40px rgba(44, 62, 80, 0.14);
-    }
-
-    .era-card.glacial {
-      background: linear-gradient(135deg, rgba(232, 244, 248, 0.9), rgba(255, 255, 255, 0.85));
-    }
-
-    .era-card.glacial::before {
+    .era-card.glacial .card-body::before {
       background: linear-gradient(180deg, #7eb8c9, #a8d8ea);
     }
 
@@ -366,10 +386,19 @@
 
     /* Ice Ages special */
     .ice-ages {
-      background: linear-gradient(180deg, rgba(168, 216, 234, 0.15), transparent);
+      background: linear-gradient(180deg, rgba(168, 216, 234, 0.18), transparent);
       border-radius: 24px;
-      padding: 3rem 2rem;
+      padding: 2.5rem 1.75rem 3rem;
       margin: 2rem 0;
+    }
+
+    .ice-ages-image {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 24px var(--shadow);
     }
 
     .timeline-visual {
@@ -421,6 +450,22 @@
       margin-top: 0.15rem;
     }
 
+    /* Feature image grid for ice section */
+    .feature-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .feature-images img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px var(--shadow);
+    }
+
     /* Footer */
     footer {
       text-align: center;
@@ -441,14 +486,26 @@
         padding: 0.75rem 1.25rem;
       }
       .nav-links {
-        gap: 1rem;
-        font-size: 0.85rem;
+        gap: 0.9rem;
+        font-size: 0.82rem;
       }
-      .era-card {
-        padding: 1.75rem 1.5rem;
+      .card-body {
+        padding: 1.5rem 1.35rem 1.75rem;
+      }
+      .hero {
+        background-attachment: scroll;
       }
       .hero h1 {
         font-size: 2.4rem;
+      }
+      .card-image {
+        height: 180px;
+      }
+      .feature-images {
+        grid-template-columns: 1fr;
+      }
+      .ice-ages-image {
+        height: 200px;
       }
     }
   </style>
@@ -469,7 +526,7 @@
 
   <header class="hero">
     <div class="hero-badge">A Journey Through Deep Time</div>
-    <h1>Rocks, Ice &amp; the Quiet Poetry of <span>Glaciers</span></h1>
+    <h1>Rocks, Ice & the Quiet Poetry of <span>Glaciers</span></h1>
     <p class="hero-sub">A love letter to the stones that remember, the ice that carves, and the ages that shaped our world — made for a geologist who reads the Earth like a story.</p>
     <div class="scroll-hint">
       <span>Scroll to begin</span>
@@ -487,26 +544,29 @@
   <!-- HADEAN / ARCHEAN -->
   <section id="hadean">
     <div class="era-card">
-      <p class="section-label">The Beginning</p>
-      <h2>Hadean &amp; Archean Eons</h2>
-      <div class="era-time">4.6 – 2.5 billion years ago</div>
-      <p>Before life had a foothold, Earth was a restless furnace of molten rock and relentless bombardment. The first continental crust began to form — dense, dark, and enduring.</p>
-      <p>No glaciers yet. The planet was far too hot. But the seeds of everything that would later freeze, fracture, and flow were already crystallizing in the primordial magma oceans.</p>
-      <div class="highlight-grid">
-        <div class="highlight">
-          <h4>🪨 Oldest Rocks</h4>
-          <p>Acasta Gneiss (Canada) and Nuvvuagittuq Greenstone — fragments older than 4 billion years.</p>
+      <img class="card-image" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1000&q=80" alt="Ancient rocky mountain landscape at dusk" loading="lazy">
+      <div class="card-body">
+        <p class="section-label">The Beginning</p>
+        <h2>Hadean & Archean Eons</h2>
+        <div class="era-time">4.6 – 2.5 billion years ago</div>
+        <p>Before life had a foothold, Earth was a restless furnace of molten rock and relentless bombardment. The first continental crust began to form — dense, dark, and enduring.</p>
+        <p>No glaciers yet. The planet was far too hot. But the seeds of everything that would later freeze, fracture, and flow were already crystallizing in the primordial magma oceans.</p>
+        <div class="highlight-grid">
+          <div class="highlight">
+            <h4>🪨 Oldest Rocks</h4>
+            <p>Acasta Gneiss (Canada) and Nuvvuagittuq Greenstone — fragments older than 4 billion years.</p>
+          </div>
+          <div class="highlight">
+            <h4>🌋 Early Crust</h4>
+            <p>Komatiites and tonalites — ultra-hot volcanic rocks that no longer erupt today.</p>
+          </div>
         </div>
-        <div class="highlight">
-          <h4>🌋 Early Crust</h4>
-          <p>Komatiites and tonalites — ultra-hot volcanic rocks that no longer erupt today.</p>
+        <div class="rock-pills">
+          <span class="pill">Gneiss</span>
+          <span class="pill">Greenstone</span>
+          <span class="pill">Komatiite</span>
+          <span class="pill">Banded Iron</span>
         </div>
-      </div>
-      <div class="rock-pills">
-        <span class="pill">Gneiss</span>
-        <span class="pill">Greenstone</span>
-        <span class="pill">Komatiite</span>
-        <span class="pill">Banded Iron</span>
       </div>
     </div>
   </section>
@@ -514,26 +574,29 @@
   <!-- PROTEROZOIC -->
   <section id="proterozoic">
     <div class="era-card glacial">
-      <p class="section-label">First Great Freezes</p>
-      <h2>Proterozoic Eon</h2>
-      <div class="era-time">2.5 billion – 541 million years ago</div>
-      <p>Oxygen rose. Continents grew. And for the first time, Earth experienced true global glaciation — the “Snowball Earth” episodes.</p>
-      <p>Ice sheets may have reached the equator. When they finally melted, the planet awoke into the Cambrian explosion. Cap carbonates still record the sudden warmth that followed.</p>
-      <div class="highlight-grid">
-        <div class="highlight">
-          <h4>❄️ Snowball Earth</h4>
-          <p>Huronian (~2.4 Ga) and Cryogenian (~720–635 Ma) glaciations — possibly planet-wide ice.</p>
+      <img class="card-image" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1000&q=80" alt="Snow-covered mountain peaks under dramatic clouds" loading="lazy">
+      <div class="card-body">
+        <p class="section-label">First Great Freezes</p>
+        <h2>Proterozoic Eon</h2>
+        <div class="era-time">2.5 billion – 541 million years ago</div>
+        <p>Oxygen rose. Continents grew. And for the first time, Earth experienced true global glaciation — the “Snowball Earth” episodes.</p>
+        <p>Ice sheets may have reached the equator. When they finally melted, the planet awoke into the Cambrian explosion. Cap carbonates still record the sudden warmth that followed.</p>
+        <div class="highlight-grid">
+          <div class="highlight">
+            <h4>❄️ Snowball Earth</h4>
+            <p>Huronian (~2.4 Ga) and Cryogenian (~720–635 Ma) glaciations — possibly planet-wide ice.</p>
+          </div>
+          <div class="highlight">
+            <h4>🧊 Tillites & Dropstones</h4>
+            <p>Ancient glacial deposits frozen in stone, found from Australia to Namibia.</p>
+          </div>
         </div>
-        <div class="highlight">
-          <h4>🧊 Tillites &amp; Dropstones</h4>
-          <p>Ancient glacial deposits frozen in stone, found from Australia to Namibia.</p>
+        <div class="rock-pills">
+          <span class="pill ice">Tillite</span>
+          <span class="pill ice">Diamictite</span>
+          <span class="pill">Cap Carbonate</span>
+          <span class="pill">Stromatolite</span>
         </div>
-      </div>
-      <div class="rock-pills">
-        <span class="pill ice">Tillite</span>
-        <span class="pill ice">Diamictite</span>
-        <span class="pill">Cap Carbonate</span>
-        <span class="pill">Stromatolite</span>
       </div>
     </div>
   </section>
@@ -541,27 +604,30 @@
   <!-- PALEOZOIC -->
   <section id="paleozoic">
     <div class="era-card">
-      <p class="section-label">Life Takes the Stage</p>
-      <h2>Paleozoic Era</h2>
-      <div class="era-time">541 – 252 million years ago</div>
-      <p>Seas flooded continents. Trilobites, corals, and early fish flourished. Mountain ranges rose as continents collided — the Appalachians, the Caledonides, the Urals.</p>
-      <p>Near the end of the era, the late Paleozoic Ice Age gripped Gondwana. Massive ice sheets left striated pavements and glacial valleys across what is now Africa, India, Australia, and South America.</p>
-      <div class="highlight-grid">
-        <div class="highlight">
-          <h4>🏔️ Mountain Building</h4>
-          <p>Alleghanian orogeny welded North America and Africa into the supercontinent Pangaea.</p>
+      <img class="card-image" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1000&q=80" alt="Dramatic mountain range with layered rock formations" loading="lazy">
+      <div class="card-body">
+        <p class="section-label">Life Takes the Stage</p>
+        <h2>Paleozoic Era</h2>
+        <div class="era-time">541 – 252 million years ago</div>
+        <p>Seas flooded continents. Trilobites, corals, and early fish flourished. Mountain ranges rose as continents collided — the Appalachians, the Caledonides, the Urals.</p>
+        <p>Near the end of the era, the late Paleozoic Ice Age gripped Gondwana. Massive ice sheets left striated pavements and glacial valleys across what is now Africa, India, Australia, and South America.</p>
+        <div class="highlight-grid">
+          <div class="highlight">
+            <h4>🏔️ Mountain Building</h4>
+            <p>Alleghanian orogeny welded North America and Africa into the supercontinent Pangaea.</p>
+          </div>
+          <div class="highlight">
+            <h4>❄️ Late Paleozoic Ice Age</h4>
+            <p>Carboniferous–Permian glaciation. Coal swamps grew between glacial advances.</p>
+          </div>
         </div>
-        <div class="highlight">
-          <h4>❄️ Late Paleozoic Ice Age</h4>
-          <p>Carboniferous–Permian glaciation. Coal swamps grew between glacial advances.</p>
+        <div class="rock-pills">
+          <span class="pill">Limestone</span>
+          <span class="pill">Sandstone</span>
+          <span class="pill">Coal</span>
+          <span class="pill ice">Glacial Till</span>
+          <span class="pill">Shale</span>
         </div>
-      </div>
-      <div class="rock-pills">
-        <span class="pill">Limestone</span>
-        <span class="pill">Sandstone</span>
-        <span class="pill">Coal</span>
-        <span class="pill ice">Glacial Till</span>
-        <span class="pill">Shale</span>
       </div>
     </div>
   </section>
@@ -569,26 +635,29 @@
   <!-- MESOZOIC -->
   <section id="mesozoic">
     <div class="era-card">
-      <p class="section-label">Age of Reptiles &amp; Warm Seas</p>
-      <h2>Mesozoic Era</h2>
-      <div class="era-time">252 – 66 million years ago</div>
-      <p>Pangaea broke apart. Dinosaurs ruled the land. The climate was largely greenhouse — warm, with high sea levels and little permanent ice at the poles.</p>
-      <p>Yet even in this warm world, there were cooler intervals and possible small polar ice caps. The rocks of this time — chalks, sandstones, and volcanic sequences — still dominate many coastlines and mountain belts.</p>
-      <div class="highlight-grid">
-        <div class="highlight">
-          <h4>🦕 Warm Climate</h4>
-          <p>Little evidence of major continental ice sheets. High CO₂ kept the planet toasty.</p>
+      <img class="card-image" src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1000&q=80" alt="Misty green hills and layered sedimentary rocks" loading="lazy">
+      <div class="card-body">
+        <p class="section-label">Age of Reptiles & Warm Seas</p>
+        <h2>Mesozoic Era</h2>
+        <div class="era-time">252 – 66 million years ago</div>
+        <p>Pangaea broke apart. Dinosaurs ruled the land. The climate was largely greenhouse — warm, with high sea levels and little permanent ice at the poles.</p>
+        <p>Yet even in this warm world, there were cooler intervals and possible small polar ice caps. The rocks of this time — chalks, sandstones, and volcanic sequences — still dominate many coastlines and mountain belts.</p>
+        <div class="highlight-grid">
+          <div class="highlight">
+            <h4>🦕 Warm Climate</h4>
+            <p>Little evidence of major continental ice sheets. High CO₂ kept the planet toasty.</p>
+          </div>
+          <div class="highlight">
+            <h4>🪨 Iconic Rocks</h4>
+            <p>Chalk (Cretaceous), Navajo Sandstone, Deccan Traps — the geological signature of a restless planet.</p>
+          </div>
         </div>
-        <div class="highlight">
-          <h4>🪨 Iconic Rocks</h4>
-          <p>Chalk (Cretaceous), Navajo Sandstone, Deccan Traps — the geological signature of a restless planet.</p>
+        <div class="rock-pills">
+          <span class="pill">Chalk</span>
+          <span class="pill">Sandstone</span>
+          <span class="pill">Basalt</span>
+          <span class="pill">Limestone</span>
         </div>
-      </div>
-      <div class="rock-pills">
-        <span class="pill">Chalk</span>
-        <span class="pill">Sandstone</span>
-        <span class="pill">Basalt</span>
-        <span class="pill">Limestone</span>
       </div>
     </div>
   </section>
@@ -596,27 +665,30 @@
   <!-- CENOZOIC -->
   <section id="cenozoic">
     <div class="era-card glacial">
-      <p class="section-label">The Ice Returns</p>
-      <h2>Cenozoic Era</h2>
-      <div class="era-time">66 million years ago – Present</div>
-      <p>After the dinosaurs vanished, mammals rose and the climate slowly cooled. Antarctica drifted over the South Pole and acquired its ice sheet. Later, the Northern Hemisphere joined the freeze.</p>
-      <p>The Quaternary Period — the last 2.6 million years — has been defined by repeated glacial–interglacial cycles. Ice sheets advanced and retreated across North America and Eurasia, carving the Great Lakes, fjords, and countless U-shaped valleys.</p>
-      <div class="highlight-grid">
-        <div class="highlight">
-          <h4>🧊 Antarctic Ice Sheet</h4>
-          <p>Formed ~34 million years ago. Still the largest single piece of ice on Earth.</p>
+      <img class="card-image" src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=1000&q=80" alt="Blue ice cave and glacier ice formations" loading="lazy">
+      <div class="card-body">
+        <p class="section-label">The Ice Returns</p>
+        <h2>Cenozoic Era</h2>
+        <div class="era-time">66 million years ago – Present</div>
+        <p>After the dinosaurs vanished, mammals rose and the climate slowly cooled. Antarctica drifted over the South Pole and acquired its ice sheet. Later, the Northern Hemisphere joined the freeze.</p>
+        <p>The Quaternary Period — the last 2.6 million years — has been defined by repeated glacial–interglacial cycles. Ice sheets advanced and retreated across North America and Eurasia, carving the Great Lakes, fjords, and countless U-shaped valleys.</p>
+        <div class="highlight-grid">
+          <div class="highlight">
+            <h4>🧊 Antarctic Ice Sheet</h4>
+            <p>Formed ~34 million years ago. Still the largest single piece of ice on Earth.</p>
+          </div>
+          <div class="highlight">
+            <h4>🌊 Northern Glaciations</h4>
+            <p>Laurentide and Scandinavian ice sheets reached their maximum only ~20,000 years ago.</p>
+          </div>
         </div>
-        <div class="highlight">
-          <h4>🌊 Northern Glaciations</h4>
-          <p>Laurentide and Scandinavian ice sheets reached their maximum only ~20,000 years ago.</p>
+        <div class="rock-pills">
+          <span class="pill ice">Moraine</span>
+          <span class="pill ice">Drumlin</span>
+          <span class="pill ice">Esker</span>
+          <span class="pill">Loess</span>
+          <span class="pill ice">Glacial Erratic</span>
         </div>
-      </div>
-      <div class="rock-pills">
-        <span class="pill ice">Moraine</span>
-        <span class="pill ice">Drumlin</span>
-        <span class="pill ice">Esker</span>
-        <span class="pill">Loess</span>
-        <span class="pill ice">Glacial Erratic</span>
       </div>
     </div>
   </section>
@@ -625,28 +697,36 @@
   <section id="ice">
     <div class="ice-ages">
       <p class="section-label">The Heart of the Matter</p>
-      <h2>Ice Ages &amp; the Language of Glaciers</h2>
+      <h2>Ice Ages & the Language of Glaciers</h2>
+      
+      <img class="ice-ages-image" src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=1200&q=80" alt="Massive glacier flowing through a mountain valley" loading="lazy">
+
       <p>Glaciers are not static. They flow, scrape, polish, pluck, and deposit. They leave behind a vocabulary written in the landscape:</p>
+
+      <div class="feature-images">
+        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" alt="Glacial mountain landscape" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=600&q=80" alt="Iceberg in polar waters" loading="lazy">
+      </div>
 
       <div class="timeline-visual">
         <div class="tl-item">
-          <strong>Cirques &amp; Aretes</strong>
+          <strong>Cirques & Aretes</strong>
           <span>Bowl-shaped hollows and knife-edge ridges carved high in mountains.</span>
         </div>
         <div class="tl-item">
-          <strong>U-shaped Valleys &amp; Fjords</strong>
+          <strong>U-shaped Valleys & Fjords</strong>
           <span>The classic glacial signature — steep walls, wide floors, and drowned by rising seas.</span>
         </div>
         <div class="tl-item">
-          <strong>Striations &amp; Chatter Marks</strong>
+          <strong>Striations & Chatter Marks</strong>
           <span>Scratches and chips on bedrock that reveal the direction of ancient ice flow.</span>
         </div>
         <div class="tl-item">
-          <strong>Moraines, Drumlins &amp; Eskers</strong>
+          <strong>Moraines, Drumlins & Eskers</strong>
           <span>The debris left behind — ridges, streamlined hills, and sinuous gravel trails of meltwater.</span>
         </div>
         <div class="tl-item">
-          <strong>Icebergs &amp; Calving</strong>
+          <strong>Icebergs & Calving</strong>
           <span>Where glaciers meet the sea, they birth floating cathedrals of ice that drift, melt, and reshape coastlines.</span>
         </div>
       </div>
@@ -706,7 +786,7 @@
           entry.target.style.transform = 'translateY(0)';
         }
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.1 });
 
     cards.forEach(card => {
       card.style.opacity = '0';
